@@ -36,12 +36,22 @@ def main():
         
         # Participant entry
         st.subheader("Participants")
-        participants = []
+        st.markdown(f"Enter {num_participants} participants (one per line):")
         
-        for i in range(num_participants):
-            participant = st.text_input(f"Participant {i+1}:", key=f"participant_{i}")
-            if participant:
-                participants.append(participant)
+        participant_text = st.text_area(
+            "Participant List",
+            height=150,
+            placeholder="Enter participant names here...\nOne name per line\n\nExample:\nAlice\nBob\nCharlie\nDiane",
+            label_visibility="collapsed"
+        )
+        
+        # Parse participants from text area
+        participants = []
+        if participant_text.strip():
+            participants = [p.strip() for p in participant_text.strip().split('\n') if p.strip()]
+        
+        # Show current count
+        st.markdown(f"**Current count:** {len(participants)}/{num_participants}")
         
         # Create bracket button
         if st.button("Create/Update Bracket", type="primary"):
@@ -49,8 +59,10 @@ def main():
                 bracket_manager.create_bracket(participants)
                 st.success("Bracket created successfully!")
                 st.rerun()
+            elif len(participants) != num_participants:
+                st.error(f"Please enter exactly {num_participants} participant names. You have {len(participants)}.")
             else:
-                st.error(f"Please enter exactly {num_participants} participant names.")
+                st.error("Please make sure all participant names are filled in.")
         
         # Reset bracket button
         if st.button("Reset Bracket"):
