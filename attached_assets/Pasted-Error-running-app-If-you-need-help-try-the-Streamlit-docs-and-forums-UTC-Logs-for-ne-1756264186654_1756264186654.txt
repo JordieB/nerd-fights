@@ -1,0 +1,114 @@
+Error running app. If you need help, try the Streamlit docs and forums.
+
+[     UTC     ] Logs for nerd-fights-nccys9qbrvxkt92vssnqgr.streamlit.app/
+
+────────────────────────────────────────────────────────────────────────────────────────
+
+[03:09:05] 🖥 Provisioning machine...
+
+[03:09:05] 🎛 Preparing system...
+
+[03:09:05] ⛓ Spinning up manager process...
+
+[03:09:15] 🚀 Starting up repository: 'nerd-fights', branch: 'main', main module: 'app.py'
+
+[03:09:15] 🐙 Cloning repository...
+
+[03:09:16] 🐙 Cloning into '/mount/src/nerd-fights'...
+Warning: Permanently added the ED25519 host key for IP address '140.82.116.3' to the list of known hosts.
+
+[03:09:16] 🐙 Cloned repository!
+
+[03:09:16] 🐙 Pulling code changes from Github...
+
+[03:09:17] 📦 Processing dependencies...
+
+Prepared 37 packages in 1.76s
+
+Installed 37 packages in 80ms
+
+ + altair==5.5.0
+
+ + attrs==25.3.0
+
+ + blinker==1.9.0
+
+ + cachetools==6.2.0
+
+ + certifi==2025.8.3
+
+ + charset-normalizer==3.4.3
+
+ + click==8.2.1
+
+ + gitdb==4.0.12
+
+ +[2025-08-27 03:09:20.032870]  gitpython==3.1.45
+
+ + idna==3.10
+
+ + jinja2==3.1.6
+
+ + jsonschema[2025-08-27 03:09:20.033168] ==4.25.1
+
+ + jsonschema-specifications==2025.4.1
+
+ + markupsafe==3.0.2
+
+ + narwhals==2.2.0
+
+ + numpy==2.3.2
+
+ + packaging[2025-08-27 03:09:20.033346] ==25.0
+
+ + pandas==2.3.2
+
+ + pillow==11.3.0
+
+ + protobuf==6.32.0
+
+ + pyarrow==21.0.0[2025-08-27 03:09:20.034049] 
+
+ + pydeck==0.9.1
+
+ + python-dateutil==2.9.0.post0
+
+ + pytz==2025.2
+
+ + [2025-08-27 03:09:20.034218] referencing==0.36.2
+
+ + requests==2.32.5
+
+ + rpds-py==0.27.0
+
+ + six==1.17.0
+
+ + smmap==5.0.2[2025-08-27 03:09:20.034390] 
+
+ + streamlit==1.49.0
+
+ + tenacity==9.1.2
+
+ + toml==0.10.2
+
+ + tornado==6.5.2
+
+ + typing-extensions==4.15.0
+
+ + tzdata==2025.2[2025-08-27 03:09:20.034544] 
+
+ + urllib3==2.5.0
+
+ + watchdog==6.0.0
+
+[03:09:20] 🐍 Python dependencies were installed from /mount/src/nerd-fights/uv.lock using uv-sync.
+
+[03:09:20] 📦 WARN: More than one requirements file detected in the repository. Available options: uv-sync /mount/src/nerd-fights/uv.lock, poetry /mount/src/nerd-fights/pyproject.toml. Used: uv-sync with /mount/src/nerd-fights/uv.lock
+
+Check if streamlit is installed
+
+Streamlit is already installed
+
+[03:09:21] 📦 Processed dependencies!
+
+[03:09:24] ❗️ The service has encountered an error while checking the health of the Streamlit app: Get "http://localhost:8501/healthz": dial tcp 127.0.0.1:8501: connect: connection refused
