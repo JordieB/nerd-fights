@@ -80,11 +80,24 @@ def display_matchup_voting(bracket_manager, matchup, matchup_index):
     
     # Determine winner button (admin feature)
     if total_votes > 0:
-        winner = max(votes.keys(), key=lambda x: votes[x])
-        if votes[winner] > votes[list(votes.keys())[0] if list(votes.keys())[0] != winner else list(votes.keys())[1]]:
-            if st.button(f"Confirm Winner: {winner}", key=f"confirm_{matchup_id}", type="secondary"):
+        vote_counts = list(votes.values())
+        if len(set(vote_counts)) == 1 and len(vote_counts) == 2:
+            # It's a tie - show coin flip option
+            st.markdown("**🟰 It's a tie!**")
+            if st.button(f"🪙 Coin Flip to Decide Winner", key=f"coinflip_{matchup_id}", type="secondary"):
+                import random
+                winner = random.choice(list(votes.keys()))
                 bracket_manager.set_matchup_winner(matchup_id, winner)
+                st.success(f"🪙 Coin flip result: **{winner}** wins!")
                 st.rerun()
+        else:
+            # Clear winner - show confirm button
+            winner = max(votes.keys(), key=lambda x: votes[x])
+            other_participants = [p for p in votes.keys() if p != winner]
+            if other_participants and votes[winner] > votes[other_participants[0]]:
+                if st.button(f"Confirm Winner: {winner}", key=f"confirm_{matchup_id}", type="secondary"):
+                    bracket_manager.set_matchup_winner(matchup_id, winner)
+                    st.rerun()
 
 def display_bracket(bracket_manager):
     """Display bracket visualization"""
