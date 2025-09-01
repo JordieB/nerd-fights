@@ -579,12 +579,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "pandas" },
+    { name = "requests" },
     { name = "streamlit" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "pandas", specifier = ">=2.3.2" },
+    { name = "requests", specifier = ">=2.32.5" },
     { name = "streamlit", specifier = ">=1.49.0" },
 ]
 

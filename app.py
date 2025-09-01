@@ -12,13 +12,14 @@ def main():
         layout="wide"
     )
     
-    # Create tabs
-    tab1, tab2 = st.tabs(["🏆 Tournament Bracket", "🔥 Smash or Pass"])
+    # Sidebar navigation
+    with st.sidebar:
+        st.title("Navigation")
+        page = st.radio("Select Page:", ["🏆 Tournament Bracket", "🔥 Smash or Pass"])
     
-    with tab1:
+    if page == "🏆 Tournament Bracket":
         tournament_page()
-    
-    with tab2:
+    elif page == "🔥 Smash or Pass":
         smash_or_pass_page()
 
 def tournament_page():
@@ -312,7 +313,8 @@ def smash_or_pass_page():
         # Create game button
         if st.button("Start Smash or Pass", type="primary"):
             if len(items) >= 2:
-                sop_manager.create_game(items)
+                with st.spinner("Creating game and loading images..."):
+                    sop_manager.create_game(items)
                 st.success("Game started!")
                 st.rerun()
             else:
@@ -358,16 +360,38 @@ def display_sop_voting_interface(sop_manager, current_item):
     st.progress(current_pos / total_items)
     st.markdown(f"**Item {current_pos} of {total_items}**")
     
-    # Current item display
-    st.markdown(f"# {current_item}")
-    
-    # Get current votes
-    votes = sop_manager.get_item_votes(current_item)
-    
-    # Voting interface
-    col1, col2 = st.columns(2)
+    # Current item display with image
+    col1, col2 = st.columns([1, 2])
     
     with col1:
+        # Display image if available
+        image_url = sop_manager.get_item_image(current_item)
+        if image_url:
+            st.image(image_url, width=300, caption=current_item)
+        else:
+            # Fallback: show a placeholder or just the text
+            st.markdown(f"### 📷")
+            st.markdown(f"*(No image found)*")
+    
+    with col2:
+        st.markdown(f"# {current_item}")
+        
+        # Get current votes
+        votes = sop_manager.get_item_votes(current_item)
+        
+        # Show current results if there are votes
+        total_votes = votes['smash'] + votes['pass']
+        if total_votes > 0:
+            smash_percentage = (votes['smash'] / total_votes) * 100
+            st.markdown(f"**Current result:** {smash_percentage:.1f}% Smash, {100-smash_percentage:.1f}% Pass")
+    
+    # Move voting interface outside columns
+    st.markdown("---")
+    
+    # Voting interface
+    vote_col1, vote_col2 = st.columns(2)
+    
+    with vote_col1:
         st.markdown("### 💥 SMASH")
         st.markdown(f"**Votes: {votes['smash']}**")
         
@@ -382,7 +406,7 @@ def display_sop_voting_interface(sop_manager, current_item):
                 sop_manager.remove_smash_vote(current_item)
                 st.rerun()
     
-    with col2:
+    with vote_col2:
         st.markdown("### 👋 PASS")
         st.markdown(f"**Votes: {votes['pass']}**")
         
@@ -396,12 +420,6 @@ def display_sop_voting_interface(sop_manager, current_item):
             if st.button("- Pass", key="pass_minus", use_container_width=True):
                 sop_manager.remove_pass_vote(current_item)
                 st.rerun()
-    
-    # Total votes for this item
-    total_votes = votes['smash'] + votes['pass']
-    if total_votes > 0:
-        smash_percentage = (votes['smash'] / total_votes) * 100
-        st.markdown(f"**Current result:** {smash_percentage:.1f}% Smash, {100-smash_percentage:.1f}% Pass")
 
 def display_sop_navigation(sop_manager):
     """Display navigation controls"""
