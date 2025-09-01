@@ -53,7 +53,7 @@ def display_sop_voting_interface(sop_manager, current_item):
         # Smash voting buttons
         smash_col1, smash_col2 = st.columns(2)
         with smash_col1:
-            # Custom CSS for green button
+            # Custom CSS for green increment button
             st.markdown("""
             <style>
             .stButton > button[key="smash_plus"] {
@@ -67,6 +67,16 @@ def display_sop_voting_interface(sop_manager, current_item):
                 sop_manager.vote_smash(current_item)
                 st.rerun()
         with smash_col2:
+            # Custom CSS for red decrement button
+            st.markdown("""
+            <style>
+            .stButton > button[key="smash_minus"] {
+                background-color: #dc3545 !important;
+                color: white !important;
+                border: none !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
             if st.button("− ", key="smash_minus", width="stretch"):
                 sop_manager.remove_smash_vote(current_item)
                 st.rerun()
@@ -78,7 +88,7 @@ def display_sop_voting_interface(sop_manager, current_item):
         # Pass voting buttons
         pass_col1, pass_col2 = st.columns(2)
         with pass_col1:
-            # Custom CSS for green button
+            # Custom CSS for green increment button
             st.markdown("""
             <style>
             .stButton > button[key="pass_plus"] {
@@ -92,6 +102,16 @@ def display_sop_voting_interface(sop_manager, current_item):
                 sop_manager.vote_pass(current_item)
                 st.rerun()
         with pass_col2:
+            # Custom CSS for red decrement button
+            st.markdown("""
+            <style>
+            .stButton > button[key="pass_minus"] {
+                background-color: #dc3545 !important;
+                color: white !important;
+                border: none !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
             if st.button("− ", key="pass_minus", width="stretch"):
                 sop_manager.remove_pass_vote(current_item)
                 st.rerun()
