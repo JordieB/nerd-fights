@@ -1,4 +1,7 @@
 attached_assets/
+.replit
+replit.md
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
