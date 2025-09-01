@@ -8,78 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🔥 Smash or Pass")
-st.markdown("Rate items one by one - Smash 💥 or Pass 👋")
-
-# Initialize session state for Smash or Pass
-if 'sop_manager' not in st.session_state:
-    st.session_state.sop_manager = SmashOrPassManager()
-
-sop_manager = st.session_state.sop_manager
-
-# Sidebar for game setup
-with st.sidebar:
-    st.header("Game Setup")
-    
-    # Item list entry
-    st.subheader("Items to Rate")
-    st.markdown("Enter items to rate (one per line):")
-    
-    items_text = st.text_area(
-        "Items List",
-        height=200,
-        placeholder="Enter items here...\nOne item per line\n\nExample:\nIguana\nGecko\nPython\nTurtle\nChameleon",
-        label_visibility="collapsed"
-    )
-    
-    # Parse items from text area
-    items = []
-    if items_text.strip():
-        items = [item.strip() for item in items_text.strip().split('\n') if item.strip()]
-    
-    # Show current count
-    st.markdown(f"**Items entered:** {len(items)}")
-    
-    # Create game button
-    if st.button("Start Smash or Pass", type="primary"):
-        if len(items) >= 2:
-            with st.spinner("Creating game and loading images..."):
-                sop_manager.create_game(items)
-            st.success("Game started!")
-            st.rerun()
-        else:
-            st.error("Please enter at least 2 items to rate.")
-    
-    # Reset game button
-    if st.button("Reset Game"):
-        sop_manager.reset_game()
-        st.success("Game reset!")
-        st.rerun()
-
-# Main content area
-if not sop_manager.game_created:
-    st.info("👆 Use the sidebar to start your Smash or Pass game!")
-    st.markdown("""
-    ### How to use:
-    1. Enter items to rate in the sidebar (one per line)
-    2. Click "Start Smash or Pass" to begin
-    3. Vote with multiple people by clicking Smash/Pass buttons
-    4. Use +/- buttons to adjust votes before moving on
-    5. Navigate through items and see final results!
-    """)
-else:
-    # Check if game is complete
-    if sop_manager.is_game_complete():
-        display_sop_results(sop_manager)
-    else:
-        # Display current item voting interface
-        current_item = sop_manager.get_current_item()
-        if current_item:
-            display_sop_voting_interface(sop_manager, current_item)
-        
-        # Navigation and progress
-        display_sop_navigation(sop_manager)
-
+# Function definitions first
 def display_sop_voting_interface(sop_manager, current_item):
     """Display voting interface for current item"""
     current_pos, total_items = sop_manager.get_progress()
@@ -219,3 +148,76 @@ def display_sop_results(sop_manager):
     if st.button("🔄 Play Again", type="primary"):
         sop_manager.reset_game()
         st.rerun()
+
+# Main app starts here
+st.title("🔥 Smash or Pass")
+st.markdown("Rate items one by one - Smash 💥 or Pass 👋")
+
+# Initialize session state for Smash or Pass
+if 'sop_manager' not in st.session_state:
+    st.session_state.sop_manager = SmashOrPassManager()
+
+sop_manager = st.session_state.sop_manager
+
+# Sidebar for game setup
+with st.sidebar:
+    st.header("Game Setup")
+    
+    # Item list entry
+    st.subheader("Items to Rate")
+    st.markdown("Enter items to rate (one per line):")
+    
+    items_text = st.text_area(
+        "Items List",
+        height=200,
+        placeholder="Enter items here...\nOne item per line\n\nExample:\nIguana\nGecko\nPython\nTurtle\nChameleon",
+        label_visibility="collapsed"
+    )
+    
+    # Parse items from text area
+    items = []
+    if items_text.strip():
+        items = [item.strip() for item in items_text.strip().split('\n') if item.strip()]
+    
+    # Show current count
+    st.markdown(f"**Items entered:** {len(items)}")
+    
+    # Create game button
+    if st.button("Start Smash or Pass", type="primary"):
+        if len(items) >= 2:
+            with st.spinner("Creating game and loading images..."):
+                sop_manager.create_game(items)
+            st.success("Game started!")
+            st.rerun()
+        else:
+            st.error("Please enter at least 2 items to rate.")
+    
+    # Reset game button
+    if st.button("Reset Game"):
+        sop_manager.reset_game()
+        st.success("Game reset!")
+        st.rerun()
+
+# Main content area
+if not sop_manager.game_created:
+    st.info("👆 Use the sidebar to start your Smash or Pass game!")
+    st.markdown("""
+    ### How to use:
+    1. Enter items to rate in the sidebar (one per line)
+    2. Click "Start Smash or Pass" to begin
+    3. Vote with multiple people by clicking Smash/Pass buttons
+    4. Use +/- buttons to adjust votes before moving on
+    5. Navigate through items and see final results!
+    """)
+else:
+    # Check if game is complete
+    if sop_manager.is_game_complete():
+        display_sop_results(sop_manager)
+    else:
+        # Display current item voting interface
+        current_item = sop_manager.get_current_item()
+        if current_item:
+            display_sop_voting_interface(sop_manager, current_item)
+        
+        # Navigation and progress
+        display_sop_navigation(sop_manager)
