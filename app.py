@@ -1,29 +1,39 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Tournament & Voting App",
-    page_icon="🏆",
+    page_title="Nerd Fights",
+    page_icon="⚔️",
     layout="wide"
 )
 
-st.write("# Welcome to Tournament & Voting App! 🏆")
+st.write("# Welcome to Nerd Fights! ⚔️")
 
 st.markdown(
     """
-    Choose from the sidebar to get started:
+    **Settle the ultimate debates with your friends!** From ranking the best husbandos to determining the supreme pie, Nerd Fights helps you and your crew decide on the best of the best through fair competition and voting.
     
-    **🏆 Tournament Bracket** - Create elimination-style tournaments where people can vote on matchups
+    Choose your battle mode from the sidebar:
     
-    **🔥 Smash or Pass** - Rate items one by one with automatic image loading
+    **🏆 Tournament Bracket** - Classic elimination-style tournaments where friends vote on head-to-head matchups until only one champion remains
+    
+    **🔥 Smash or Pass** - Rate items one by one to see what rises to the top and what gets left behind
+    
+    ### Perfect for settling friend group debates about:
+    - Best anime characters, waifus, or husbandos 
+    - Ultimate food rankings (pizza toppings, desserts, etc.)
+    - Movie/TV show battles
+    - Video game tier lists
+    - Music artists or songs
+    - Literally anything your friend group argues about!
     
     ### Features:
-    - Easy participant/item entry (paste lists with one item per line)
-    - Real-time voting and results
-    - Shareable URLs for collaborative voting
-    - Automatic image search for Smash or Pass items
-    - Progress tracking and final rankings
+    - Easy setup (just paste your list, one item per line)
+    - Real-time collaborative voting
+    - Shareable links so everyone can participate
+    - Automatic tie-breakers with coin flips
+    - Epic final results with medal rankings
     
-    **👈 Select a page from the sidebar** to get started!
+    **👈 Pick your weapon from the sidebar** and let the fights begin!
     """
 )
 
