@@ -25,7 +25,7 @@ def display_sop_voting_interface(sop_manager, current_item):
     if image_url:
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.image(image_url, width=300, use_column_width=True)
+            st.image(image_url, width=300, use_container_width=True)
     else:
         # Fallback: show a placeholder centered
         col1, col2, col3 = st.columns([1, 2, 1])
@@ -161,13 +161,21 @@ sop_manager = st.session_state.sop_manager
 with st.sidebar:
     st.header("Game Setup")
     
+    # Subject topic entry
+    st.subheader("Subject Topic (Optional)")
+    subject_topic = st.text_input(
+        "Subject Topic",
+        placeholder="e.g., reptile, car, food, etc.",
+        help="This will be added to each item search for better image results"
+    )
+    
     # Item list entry
     st.subheader("Items to Rate")
     st.markdown("Enter items to rate (one per line):")
     
     items_text = st.text_area(
         "Items List",
-        height=200,
+        height=180,
         placeholder="Enter items here...\nOne item per line\n\nExample:\nIguana\nGecko\nPython\nTurtle\nChameleon",
         label_visibility="collapsed"
     )
@@ -184,7 +192,7 @@ with st.sidebar:
     if st.button("Start Smash or Pass", type="primary"):
         if len(items) >= 2:
             with st.spinner("Creating game and loading images..."):
-                sop_manager.create_game(items)
+                sop_manager.create_game(items, subject_topic.strip() if subject_topic.strip() else None)
             st.success("Game started!")
             st.rerun()
         else:

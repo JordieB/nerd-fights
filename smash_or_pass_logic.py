@@ -8,12 +8,14 @@ class SmashOrPassManager:
         self.current_index = 0
         self.votes = {}  # item_name: {'smash': count, 'pass': count}
         self.images = {}  # item_name: image_url
+        self.subject_topic = None  # Optional topic to prefix searches
         self.game_created = False
         self.game_complete = False
     
-    def create_game(self, items: List[str]):
+    def create_game(self, items: List[str], subject_topic: Optional[str] = None):
         """Create a new Smash or Pass game"""
         self.items = items.copy()
+        self.subject_topic = subject_topic
         self.current_index = 0
         self.votes = {}
         self.images = {}
@@ -113,6 +115,7 @@ class SmashOrPassManager:
         self.current_index = 0
         self.votes = {}
         self.images = {}
+        self.subject_topic = None
         self.game_created = False
         self.game_complete = False
     
@@ -128,12 +131,15 @@ class SmashOrPassManager:
         
         for item in self.items:
             try:
+                # Create search query with optional topic prefix
+                search_query = f"{self.subject_topic} {item}" if self.subject_topic else item
+                
                 # Search for the first image of this item
                 response = requests.get(
                     f'https://api.pexels.com/v1/search',
                     headers=headers,
                     params={
-                        'query': item,
+                        'query': search_query,
                         'per_page': 1,
                         'orientation': 'square'
                     },
