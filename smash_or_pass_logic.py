@@ -1,33 +1,26 @@
 from typing import List, Dict, Optional
-import requests
-import os
 
 class SmashOrPassManager:
     def __init__(self):
         self.items = []
         self.current_index = 0
         self.votes = {}  # item_name: {'smash': count, 'pass': count}
-        self.images = {}  # item_name: image_url
-        self.subject_topic = None  # Optional topic to prefix searches
+        # Removed image functionality as requested
         self.game_created = False
         self.game_complete = False
     
     def create_game(self, items: List[str], subject_topic: Optional[str] = None):
         """Create a new Smash or Pass game"""
         self.items = items.copy()
-        self.subject_topic = subject_topic
         self.current_index = 0
         self.votes = {}
-        self.images = {}
+        # Removed image functionality
         self.game_created = True
         self.game_complete = False
         
         # Initialize votes for all items
         for item in self.items:
             self.votes[item] = {'smash': 0, 'pass': 0}
-            
-        # Fetch images for all items
-        self._fetch_images_for_items()
     
     def get_current_item(self) -> Optional[str]:
         """Get the current item being voted on"""
@@ -114,53 +107,10 @@ class SmashOrPassManager:
         self.items = []
         self.current_index = 0
         self.votes = {}
-        self.images = {}
-        self.subject_topic = None
+        # Images removed
         self.game_created = False
         self.game_complete = False
     
-    def _fetch_images_for_items(self):
-        """Fetch images for all items using Pexels API"""
-        api_key = os.getenv('PEXELS_API_KEY')
-        if not api_key:
-            return
-        
-        headers = {
-            'Authorization': api_key
-        }
-        
-        for item in self.items:
-            try:
-                # Create search query with optional topic prefix
-                search_query = f"{self.subject_topic} {item}" if self.subject_topic else item
-                
-                # Search for the first image of this item
-                response = requests.get(
-                    f'https://api.pexels.com/v1/search',
-                    headers=headers,
-                    params={
-                        'query': search_query,
-                        'per_page': 1,
-                        'orientation': 'square'
-                    },
-                    timeout=5
-                )
-                
-                if response.status_code == 200:
-                    data = response.json()
-                    if data['photos']:
-                        # Get the medium-sized image
-                        self.images[item] = data['photos'][0]['src']['medium']
-                    else:
-                        # Fallback to a generic image or None
-                        self.images[item] = None
-                else:
-                    self.images[item] = None
-                    
-            except Exception as e:
-                # If API call fails, set to None
-                self.images[item] = None
-    
     def get_item_image(self, item: str) -> Optional[str]:
-        """Get the image URL for an item"""
-        return self.images.get(item)
+        """Images removed - always returns None"""
+        return None

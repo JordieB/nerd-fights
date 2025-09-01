@@ -176,12 +176,12 @@ def display_matchup_voting(bracket_manager, matchup, matchup_index):
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button(f"Vote for {participant1}", key=f"vote_{matchup_id}_{participant1}", use_container_width=True):
+        if st.button(f"Vote for {participant1}", key=f"vote_{matchup_id}_{participant1}", width="stretch"):
             bracket_manager.vote(matchup_id, participant1)
             st.rerun()
     
     with col2:
-        if st.button(f"Vote for {participant2}", key=f"vote_{matchup_id}_{participant2}", use_container_width=True):
+        if st.button(f"Vote for {participant2}", key=f"vote_{matchup_id}_{participant2}", width="stretch"):
             bracket_manager.vote(matchup_id, participant2)
             st.rerun()
     

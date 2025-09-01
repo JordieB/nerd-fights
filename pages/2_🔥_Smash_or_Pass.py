@@ -20,18 +20,7 @@ def display_sop_voting_interface(sop_manager, current_item):
     # Current item display - name first, then centered image
     st.markdown(f"<h1 style='text-align: center'>{current_item}</h1>", unsafe_allow_html=True)
     
-    # Display image centered below the name
-    image_url = sop_manager.get_item_image(current_item)
-    if image_url:
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.image(image_url, width=300, use_container_width=True)
-    else:
-        # Fallback: show a placeholder centered
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.markdown("### 📷")
-            st.markdown("*(No image found)*")
+    # No image display - removed as requested
     
     # Show current results if there are votes
     votes = sop_manager.get_item_votes(current_item)
@@ -201,13 +190,7 @@ sop_manager = st.session_state.sop_manager
 with st.sidebar:
     st.header("Game Setup")
     
-    # Subject topic entry
-    st.subheader("Subject Topic (Optional)")
-    subject_topic = st.text_input(
-        "Subject Topic",
-        placeholder="e.g., reptile, car, food, etc.",
-        help="This will be added to each item search for better image results"
-    )
+    # Subject topic removed since images were removed
     
     # Item list entry
     st.subheader("Items to Rate")
@@ -231,8 +214,8 @@ with st.sidebar:
     # Create game button
     if st.button("Start Smash or Pass", type="primary"):
         if len(items) >= 2:
-            with st.spinner("Creating game and loading images..."):
-                sop_manager.create_game(items, subject_topic.strip() if subject_topic.strip() else None)
+            with st.spinner("Creating game..."):
+                sop_manager.create_game(items)
             st.success("Game started!")
             st.rerun()
         else:
