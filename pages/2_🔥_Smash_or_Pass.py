@@ -17,30 +17,28 @@ def display_sop_voting_interface(sop_manager, current_item):
     st.progress(current_pos / total_items)
     st.markdown(f"**Item {current_pos} of {total_items}**")
     
-    # Current item display with image
-    col1, col2 = st.columns([1, 2])
+    # Current item display - name first, then centered image
+    st.markdown(f"<h1 style='text-align: center'>{current_item}</h1>", unsafe_allow_html=True)
     
-    with col1:
-        # Display image if available
-        image_url = sop_manager.get_item_image(current_item)
-        if image_url:
-            st.image(image_url, width=300, caption=current_item)
-        else:
-            # Fallback: show a placeholder or just the text
-            st.markdown(f"### 📷")
-            st.markdown(f"*(No image found)*")
+    # Display image centered below the name
+    image_url = sop_manager.get_item_image(current_item)
+    if image_url:
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image(image_url, width=300, use_column_width=True)
+    else:
+        # Fallback: show a placeholder centered
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.markdown("### 📷")
+            st.markdown("*(No image found)*")
     
-    with col2:
-        st.markdown(f"# {current_item}")
-        
-        # Get current votes
-        votes = sop_manager.get_item_votes(current_item)
-        
-        # Show current results if there are votes
-        total_votes = votes['smash'] + votes['pass']
-        if total_votes > 0:
-            smash_percentage = (votes['smash'] / total_votes) * 100
-            st.markdown(f"**Current result:** {smash_percentage:.1f}% Smash, {100-smash_percentage:.1f}% Pass")
+    # Show current results if there are votes
+    votes = sop_manager.get_item_votes(current_item)
+    total_votes = votes['smash'] + votes['pass']
+    if total_votes > 0:
+        smash_percentage = (votes['smash'] / total_votes) * 100
+        st.markdown(f"<div style='text-align: center'><b>Current result: {smash_percentage:.1f}% Smash, {100-smash_percentage:.1f}% Pass</b></div>", unsafe_allow_html=True)
     
     # Move voting interface outside columns
     st.markdown("---")
