@@ -3,4 +3,4 @@ headless = true
 address = "0.0.0.0"
 
 [theme]
-base = "light"
+base = "dark"
