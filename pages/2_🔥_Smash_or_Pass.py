@@ -53,11 +53,11 @@ def display_sop_voting_interface(sop_manager, current_item):
         # Smash voting buttons
         smash_col1, smash_col2 = st.columns(2)
         with smash_col1:
-            if st.button("+ ", key="smash_plus", use_container_width=True):
+            if st.button("+ ", key="smash_plus", use_container_width=True, type="primary"):
                 sop_manager.vote_smash(current_item)
                 st.rerun()
         with smash_col2:
-            if st.button("- ", key="smash_minus", use_container_width=True):
+            if st.button("− ", key="smash_minus", use_container_width=True):
                 sop_manager.remove_smash_vote(current_item)
                 st.rerun()
     
@@ -68,11 +68,11 @@ def display_sop_voting_interface(sop_manager, current_item):
         # Pass voting buttons
         pass_col1, pass_col2 = st.columns(2)
         with pass_col1:
-            if st.button("+ ", key="pass_plus", use_container_width=True):
+            if st.button("+ ", key="pass_plus", use_container_width=True, type="primary"):
                 sop_manager.vote_pass(current_item)
                 st.rerun()
         with pass_col2:
-            if st.button("- ", key="pass_minus", use_container_width=True):
+            if st.button("− ", key="pass_minus", use_container_width=True):
                 sop_manager.remove_pass_vote(current_item)
                 st.rerun()
 
