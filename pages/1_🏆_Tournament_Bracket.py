@@ -132,6 +132,84 @@ def display_tournament_progress(bracket_manager):
     total_rounds = bracket_manager.get_total_rounds()
     st.markdown(f"**Current Round:** {current_round} of {total_rounds}")
 
+def display_tournament_final_results(bracket_manager):
+    """Display final tournament results with ranking"""
+    st.markdown("### 🏆 Final Tournament Results")
+    
+    winner = bracket_manager.get_winner()
+    
+    # Winner podium
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown(f"<h2 style='text-align: center'>🥇 Champion</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center'>{winner}</h1>", unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
+    # Get all participants and their performance using available methods
+    participants = bracket_manager.participants
+    participant_stats = []
+    
+    for participant in participants:
+        # Get wins and losses for each participant
+        wins = 0
+        losses = 0
+        total_votes_received = 0
+        
+        # Check all matchups to calculate stats using bracket data
+        bracket_data = bracket_manager.bracket
+        for round_num in bracket_data:
+            for matchup in bracket_data[round_num]:
+                if participant in matchup.get('participants', []):
+                    votes = bracket_manager.get_matchup_votes(matchup['id'])
+                    participant_votes = votes.get(participant, 0)
+                    total_votes_received += participant_votes
+                    
+                    if matchup.get('completed') and matchup.get('winner') == participant:
+                        wins += 1
+                    elif matchup.get('completed') and participant in matchup['participants']:
+                        losses += 1
+        
+        participant_stats.append({
+            'name': participant,
+            'wins': wins,
+            'losses': losses,
+            'total_votes': total_votes_received
+        })
+    
+    # Sort by wins (descending), then by total votes (descending)
+    participant_stats.sort(key=lambda x: (x['wins'], x['total_votes']), reverse=True)
+    
+    st.markdown("### Tournament Rankings")
+    
+    for i, stats in enumerate(participant_stats, 1):
+        col1, col2, col3 = st.columns([1, 3, 2])
+        
+        with col1:
+            # Medal emojis for top 3
+            if i == 1:
+                st.markdown("🥇")
+            elif i == 2:
+                st.markdown("🥈")
+            elif i == 3:
+                st.markdown("🥉")
+            else:
+                st.markdown(f"**{i}.**")
+        
+        with col2:
+            st.markdown(f"**{stats['name']}**")
+        
+        with col3:
+            st.markdown(f"{stats['wins']} wins, {stats['losses']} losses")
+            st.markdown(f"({stats['total_votes']} total votes)")
+        
+        st.markdown("---")
+    
+    # Play again button
+    if st.button("🔄 Start New Tournament", type="primary"):
+        bracket_manager.reset_bracket()
+        st.rerun()
+
 def display_tournament_stats(bracket_manager):
     """Display final tournament statistics"""
     st.subheader("Tournament Statistics")
@@ -242,6 +320,9 @@ else:
         winner = bracket_manager.get_winner()
         st.balloons()
         st.success(f"🎉 Tournament Complete! Winner: **{winner}**")
+        
+        # Display final results screen
+        display_tournament_final_results(bracket_manager)
         
         # Display final bracket
         display_bracket(bracket_manager)
